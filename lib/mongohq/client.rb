@@ -10,7 +10,62 @@ module Mongohq
   #   client = Mongohq::Client.new("arthur","dent")
   #   client.create_database 'mydatabase','micro'
   #
-  #   
+  # @example Get list of datbases
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.databases()
+  #
+  # @example Get info about a database
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.database('angelina')
+  #
+  # @example Get a list of collections
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.collections('angelina')
+  #
+  # @example Create a collection
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.create_collection('angelina','test')
+  #
+  # @example Rename a collection
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.rename_collection('angelina','test','test1')
+  #
+  # @example Get collection info
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.collection('angelina','test')
+  #
+  # @example Delete a collection
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.delete_collection('angelina','test')
+  #
+  # @example Query for documents (see method description for more options)
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.documents('angelina','test')
+  #
+  # @example Query for documents with limit
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.documents('angelina','test', {:limit=>1})
+  #
+  # @example Create a document
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.create_document('angelina','test',"{'name' : 'blah'}")
+  #
+  # @example Update a document
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.update_document('angelina','test','4e36dbd15163dd5b82000004',"{'name' : 'blah 1'}")
+  #
+  # @example Get a document
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.document('angelina','test','4e36dbd15163dd5b82000004')
+  #
+  # @example Delete a document
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.delete_document('angelina','test','4e36dbd15163dd5b82000004')
+  #
+  # @example Delete a database
+  #   client = Mongohq::Client.new("arthur","dent")
+  #   client.delete_database('angelina')
+  #
   class Client
     include HTTParty
     base_uri 'https://mongohq.com/api'
@@ -20,7 +75,7 @@ module Mongohq
     # @param [String] api_secret the api_secret of your mongohq.com account.
     # @return [Client] a new instance of the client.
     def initialize(api_key, api_secret )
-      @auth = {:user => api_key, :password => api_secret}
+      @auth = {:username => api_key, :password => api_secret}
     end
        
 private
@@ -45,7 +100,7 @@ private
     # @raise [StandardError] raised in case of an error that is not web service related. 
     # @return [HTTParty::Response] the response as returned by the web request.
     def handle_result(response)
-      puts response.inspect
+      #puts response.inspect
       response.ok? ? response : bad_response(response) 
     end
 
