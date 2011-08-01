@@ -20,16 +20,18 @@ module Mongohq
     # @param [String] api_secret the api_secret of your mongohq.com account.
     # @return [Client] a new instance of the client.
     def initialize(api_key, api_secret )
-      @auth = {:api_key => api_key, :api_secret => api_secret}
+      @auth = {:user => api_key, :password => api_secret}
     end
-          
+       
+private
+   
     # Examines a bad response and raises an appropriate exception
     #
     # @param [HTTParty::Response] the response as returned by the web request.
     # @raise [ResponseError] raised in case of a web service related error.
     # @raise [StandardError] raised in case of an error that is not web service related. 
     # @return [HTTParty::Response] the response as returned by the web request.
-    def self.bad_response(response)
+    def bad_response(response)
       if response.class == HTTParty::Response
        raise ResponseError, response
       end
@@ -44,7 +46,7 @@ module Mongohq
     # @return [HTTParty::Response] the response as returned by the web request.
     def handle_result(response)
       puts response.inspect
-      response.ok? ? response : self.bad_response(response) 
+      response.ok? ? response : bad_response(response) 
     end
 
 public  
