@@ -17,6 +17,8 @@ describe Mongohq::Client do
   context "when invoking POST https://mongohq.com/api/databases" do
     it "should create a new database" do
       res = @client.create_database('angelina','micro')
+      res['ok'].should == 1
+      
     end  
   end
 

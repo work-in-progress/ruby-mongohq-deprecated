@@ -1,5 +1,5 @@
 
-WARNING: WORKS EXCEPT FOR CREATE DATABASE. WORKING ON THAT.
+INFO: Need to improve the specs eventually.
 
 ## mongohq
 
