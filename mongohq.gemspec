@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["martin@wawrusch.com"]
   s.homepage    = "http://github.com/scottyapp/mongohq"
   s.summary     = %q{An API wrapper for the mongohq API (http://mongohq.com).}
-  s.description = %q{A gem that implements the mongohq.com API which allows you to cloud-host node.js applications.}
+  s.description = %q{A gem that implements the mongohq.com API which allows you to host mongodb in the cloud.}
   s.extra_rdoc_files   = ["LICENSE","README.md"]
   s.rdoc_options = ["--charset=UTF-8"]
   s.rubyforge_project = "mongohq"

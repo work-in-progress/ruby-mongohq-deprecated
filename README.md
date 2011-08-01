@@ -46,7 +46,12 @@ This gem was created to the tunes of Natalia Kills and Nicki Minaj.
 
 ## Release Notes
 
+### 0.0.2
+
+* Changed the description. Apologies for the version bump.
+
 ### 0.0.1
+
 * First version
 
 ## Contributing to mongohq
