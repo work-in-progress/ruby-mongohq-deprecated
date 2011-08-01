@@ -44,7 +44,7 @@ private
     # @raise [StandardError] raised in case of an error that is not web service related. 
     # @return [HTTParty::Response] the response as returned by the web request.
     def handle_result(response)
-      response.ok? ? response : bad_response(response) 
+      response.ok? ? response : self.bad_response(response) 
     end
 
 public  
