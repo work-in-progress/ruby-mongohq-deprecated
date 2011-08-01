@@ -59,7 +59,8 @@ public
     end
 
 
-  
+
+=begin  
     # Updates the settings for the current user.
     # @option opts [String] :password the password to update.
     # @option opts [String] :rsakey the rsa key to update.
@@ -163,7 +164,6 @@ public
       handle_result self.class.get('/env', options)
     end
   
-  # curl -X POST -u "mwawrusch:mw09543089" -d "appname=myappname&action=install&package=express" http://api.mongohq.com/npm
   
     # Manages the NPM package manager associated with an app.
     # @param (String) appname the name of the app.
@@ -202,6 +202,7 @@ public
       options={:basic_auth => @auth}
       handle_result self.class.get('/appdomains', options)
     end
+=end
 
   end
 end

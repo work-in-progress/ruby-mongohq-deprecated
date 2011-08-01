@@ -7,128 +7,91 @@ describe Mongohq::Client do
     @client = Mongohq::Client.new("arthur","dent")
   end
   
+  
+  context "when invoking GET https://mongohq.com/api/databases" do
+    it "should return a list of databases" do
+      res = @client.databases
+    end
+  end
 
-  context "when invoking platform_coupon_request" do
-    it "should be a success" do
-      res = @client.platform_coupon_request "arthur@dent.com"
-      res['status'].start_with?('success').should == true
+  context "when invoking POST https://mongohq.com/api/databases" do
+    it "should create a new database" do
+      res = @client.create_database('angelina','micro')
+    end  
+  end
+
+  context "when invoking GET https://mongohq.com/api/databases/angelina" do
+    it "should return details about the database" do
+      res = @client.database('angelina')
+    end
+  end
+
+  context "when invoking DELETE https://mongohq.com/api/databases/angelina" do
+    it "should delete the database" do
+      res = @client.delete_database('angelina')
+      res['ok'].should == 1
+    end
+  end
+
+  context "when invoking GET https://mongohq.com/api/databases/angelina/collections" do
+    it "should return a list of collections" do
+      res = @client.collections('angelina')
+    end
+  end
+
+  context "when invoking POST https://mongohq.com/api/databases/angelina/collections" do
+    it "should create a new collection" do
+      res = @client.create_collection('angelina','test')
+    end  
+  end
+
+  context "when invoking GET https://mongohq.com/api/databases/angelina/collections/test" do
+    it "should return details about the collection" do
+      res = @client.collection('angelina','test')
     end
   end
   
-  context "when invoking platform_status" do
-    it "should return a status" do
-      res = @client.platform_status
-      res['status'].should == "up"
-      res['appshosted'].should == 1599
-      res['appsrunning'].should == 988
+  context "when invoking PUT https://mongohq.com/api/databases/angelina/collections/test" do
+    it "should rename the collection" do
+      res = @client.rename_collection('angelina','test','test1')
+
     end
   end
 
-  # Need testing:
-  #platform_create_user
-  #update_user
-  #platform_delete_user
-
-  context "when invoking create_app" do
-    it "should create an app" do
-      res = @client.create_app "testapp","server.js"
-      res['status'].should == "success"
-      res['port'].should > 0
-      res['gitrepo'].start_with?('git@mongohq.com:/node/git/').should == true
-      res['start'].should == 'server.js'
-      res['running'].should == false
-      res['pid'].should == 'unknown'
-      
-    end
-  end
-
-=begin
-  context "when invoking update_app" do
-    it "should update an app" do
-      res = @client.update_app
-    end
-  end
-
-  context "when invoking start_stop_app" do
-    it "should start an app" do
-      res = @client.start_stop_app('testapp',true)
+  context "when invoking DELETE https://mongohq.com/api/databases/angelina/collections/test" do
+    it "should delete the collection" do
+      res = @client.delete_collection('angelina','test')
+      res['ok'].should == 1
     end
   end
   
-  context "when invoking delete_app" do
-    it "should delete an app" do
-      res = @client.delete_app
-    end
-  end
-=end
-
-  context "when invoking app" do
-    it "should return app info" do
-      res = @client.app 'a1234'
-      res['status'].should == "success"
-      res['port'].should > 0
-      res['gitrepo'].start_with?('git@mongohq.com:/node/git/').should == true
-      res['start'].should == 'server.js'
-      res['running'].should == false
-      res['pid'].should == 'unknown'
-      
+  context "when invoking GET https://mongohq.com/api/databases/angelina/collections/test/documents" do
+    it "should return all documents in the collection" do
+      res = @client.documents('angelina','test',{})
     end
   end
 
-  context "when invoking apps" do
-    it "should return a list of apps" do
-      res = @client.apps
-      res.length.should == 2
-      res[0]['name'].should == 'a1234'
+  context "when invoking POST https://mongohq.com/api/databases/angelina/collections/test/documents" do
+    it "should create a new document" do
+      res = @client.create_document('angelina','test',{:name=>"blah"})
     end
   end
 
-=begin
-  context "when invoking update_env" do
-    it "should set an env value" do
-      res = @client.update_env
+  context "when invoking GET https://mongohq.com/api/databases/angelina/collections/test/documents/4e36c1535163dd2752000004" do
+    it "should retrieve the document" do
+      res = @client.document('angelina','test','4e36c1535163dd2752000004')
     end
   end
   
-  context "when invoking delete_env" do
-    it "should remove an env value" do
-      res = @client.delete_env
+  context "when invoking PUT  https://mongohq.com/api/databases/angelina/collections/test/documents/4e36c1535163dd2752000004" do
+    it "should retrieve the document" do
+      res = @client.update_document('angelina','test','4e36c1535163dd2752000004', {:name=>'blah 1'})
     end
   end
 
-  context "when invoking env" do
-    it "should return an env value" do
-      res = @client.env
+  context "when invoking DELETE https://mongohq.com/api/databases/angelina/collections/test/documents/4e36c1535163dd2752000004" do
+    it "should delete the document" do
+      res = @client.update_document('angelina','test','4e36c1535163dd2752000004')
     end
   end
-=end
-
-  context "when invoking update_npm" do
-    it "should perform an op against the npm" do
-      res = @client.update_npm 'myappname','install','express'
-      res['output'].length.should > 0
-      res['status'].should == 'success'
-    end
-  end
-
-=begin
-  context "when invoking create_appdomain" do
-    it "should create an app domain" do
-      res = @client.create_appdomain
-    end
-  end
-
-  context "when invoking delete_appdomain" do
-    it "should delete an app domain" do
-      res = @client.delete_appdomain
-    end
-  end
-
-  context "when invoking appdomains" do
-    it "should list all available appdomains" do
-      res = @client.update_npm
-    end
-  end
-=end
-
 end
