@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Status: 200
+Content-Type: application/json; charset=utf-8
+
+{"collections":4,"objects":12,"avgObjSize":219.66666666666666,"dataSize":2636,"storageSize":30208,"numExtents":4,"indexes":3,"indexSize":24576,"fileSize":50331648,"ok":1.0}

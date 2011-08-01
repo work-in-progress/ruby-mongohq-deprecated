@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Status: 200
+Content-Type: application/json; charset=utf-8
+
+[{"_id":"4e35267274c22b0001000001","description":"","email":"martin@wawrusch.com"}]

@@ -1,5 +1,5 @@
 require "mongohq/version"
 
 module Mongohq
-  # Your code goes here...
+  require "mongohq/client"
 end

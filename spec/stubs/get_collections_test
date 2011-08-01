@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Status: 200
+Content-Type: application/json; charset=utf-8
+
+{"ns":"scottyapp.test","count":0,"size":0,"avgObjSize":NaN,"storageSize":8192,"numExtents":1,"nindexes":1,"lastExtentSize":8192,"paddingFactor":1.0,"flags":1,"totalIndexSize":8192,"indexSizes":{"_id_":8192},"ok":1.0}
