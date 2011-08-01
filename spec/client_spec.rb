@@ -91,7 +91,7 @@ describe Mongohq::Client do
 
   context "when invoking DELETE https://mongohq.com/api/databases/angelina/collections/test/documents/4e36c1535163dd2752000004" do
     it "should delete the document" do
-      res = @client.update_document('angelina','test','4e36c1535163dd2752000004')
+      res = @client.delete_document('angelina','test','4e36c1535163dd2752000004')
     end
   end
 end

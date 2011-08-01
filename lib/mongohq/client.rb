@@ -58,152 +58,143 @@ public
       handle_result self.class.get('/databases', options)
     end
 
-
-
-=begin  
-    # Updates the settings for the current user.
-    # @option opts [String] :password the password to update.
-    # @option opts [String] :rsakey the rsa key to update.
+    # Creates a new database
+    # @param (String) name the name of the new database.
+    # @param (String) db_type the type of the new database. Can be micro, small, large. Check mongohq.com for additional options
     # @return [HTTParty::Response] A response.
-    def update_user(opts={})
-      options={:body => opts,:basic_auth => @auth}
-      handle_result self.class.put('/user', options)
+    def create_database(name,db_type)
+      options={:basic_auth => @auth, :body => {:name => name,:db_type => db_type}}
+      handle_result self.class.post("/databases", options)
     end
 
-    # Deletes the current user.
+    # Deletes a database. This cannot be undone.
+    # @param (String) database the name of the database.
     # @return [HTTParty::Response] A response.
-    def platform_delete_user()
+    def delete_database(database)
       options={:basic_auth => @auth}
-      handle_result self.class.delete('/user', options)
-    end
-  
-
-
-    # Creates a new app.
-    # @param (String) appname the name of the app.
-    # @param (String) start the file that contains the node.js startup code. (server.js)
-    # @return [HTTParty::Response] A response.
-    # @note The result contains the following entries (check http://mongohq.com for up to date information):
-    #   * 'status' : "success" | "failure"
-    #   * 'message' : "some text" ==> Only if failure
-    #   * 'port' : 12345
-    #   * 'gitrepo' : 'git@mongohq.com:/node/git/mwawrusch/blah.git'
-    #   * 'start' : "the value of start, for example servre.js"
-    #   * 'running' : true | false 
-    #   * 'pid' : "unknown" | some pid 
-    def create_app(appname,start)
-      options={:body => {:appname=>appname,:start=>start}, :basic_auth => @auth}
-      handle_result self.class.post('/app', options)
+      handle_result self.class.delete("/databases/#{database}", options)
     end
 
-    # Updates properties of an app.
-    # @param (String) appname the name of the app.
-    # @option opts [String] :start the startup file that contains the node.js startup code.
+
+    # Returns the database specific information
+    # @param (String) database the name of the database.
     # @return [HTTParty::Response] A response.
-    def update_app(appname,opts = {})
-      opts.merge!({:appname => appname})
-      
-      options={:body=> opts, :basic_auth => @auth}
-      handle_result self.class.put('/app', options)
+    #   The database info as returned from mongodb
+    def database(database)
+      options={:basic_auth => @auth}
+      handle_result self.class.get("/databases/#{database}", options)
     end
     
-    # Starts or stops an app.
-    # @param (String) appname the name of the app.
-    # @param (Boolean) running true to start the app; false to stop the app.
+    
+    # Returns a list of all collections belonging to the database.
+    # @param (String) database the name of the database.
     # @return [HTTParty::Response] A response.
-    def start_stop_app(appname,running = true)
-      
-      options={:body=> {:appname => appname, :running=>start}, :basic_auth => @auth}
-      handle_result self.class.put('/app', options)
-    end
-
-    # Deletes an app.
-    # @param (String) appname the name of the app.
-    # @return [HTTParty::Response] A response.
-    def delete_app(appname)
-      options={:body => {:appname => appname}, :basic_auth => @auth}
-      handle_result self.class.delete('/app', options)
-    end
-  
-    # Returns the properties of an app.
-    # @param (String) appname the name of the app.
-    # @return [HTTParty::Response] A response.
-    def app(appname)
-      options={:body => {},:basic_auth => @auth}
-      handle_result self.class.get("/app/#{appname}", options)
-    end
-  
-
-  
-  
-    # Creates or updates a value for a key in the app's environment.
-    # @param (String) appname the name of the app.
-    # @param (String) key the key (name) of the evironment variable.
-    # @param (String) value the value of the environment variable.
-    # @return [HTTParty::Response] A response.
-    def update_env(appname,key,value)
-      options={:body => {:appname => appname,:key=>key,:value=>value},:basic_auth => @auth}
-      handle_result self.class.put('/env', options)
-    end
-
-    # Deletes a key from the app's environment.
-    # @param (String) appname the name of the app.
-    # @param (String) key the key (name) of the evironment variable.
-    # @return [HTTParty::Response] A response.
-    def delete_env(appname,key)
-      options={:body => {:appname => appname,:key=>key},:basic_auth => @auth}
-      handle_result self.class.delete('/env', options)
-    end
-  
-    # Returns the value of a key in the app's environment.
-    # @param (String) appname the name of the app.
-    # @param (String) key the key (name) of the evironment variable.
-    # @return [HTTParty::Response] A response.
-    def env(appname,key)
-      options={:body => {:appname => appname,:key=>key},:basic_auth => @auth}
-      handle_result self.class.get('/env', options)
-    end
-  
-  
-    # Manages the NPM package manager associated with an app.
-    # @param (String) appname the name of the app.
-    # @param (String) action the action to perform. Can be install|upgrade|uninstall. Check official documentation
-    #  for more info.
-    # @param (String) package the name of the package that should be worked with.
-    # @return [HTTParty::Response] A response.
-    def update_npm(appname,action,package)
-      options={:body => {:appname => appname,:action => action,:package=>package},:basic_auth => @auth}
-      handle_result self.class.post('/npm', options)
-    end
-  
-    # Creates a new domain entry for an app.
-    # @note Check out the http://notester.com site for up to date information how to set your
-    #   a record to route the domain to the actual servers.
-    # @param (String) appname the name of the app.
-    # @param (String) domain the domain to be associated with the app.
-    # @return [HTTParty::Response] A response.
-    def create_appdomain(appname,domain)
-      options={:body => {:appname => appname,:domain=>domain},:basic_auth => @auth}
-      handle_result self.class.post('/appdomains', options)
-    end
-  
-    # Deletes a domain entry from an app.
-    # @param (String) appname the name of the app.
-    # @param (String) domain the domain to be disassociated from the app.
-    # @return [HTTParty::Response] A response.
-    def delete_appdomain(appname,domain)
-      options={:body => {:appname => appname,:domain=>domain},:basic_auth => @auth}
-      handle_result self.class.delete('/appdomains', options)
-    end
-  
-    # Returns a list of all app domains for all apps of the current user.
-    # @return [HTTParty::Response] A response.
-    def appdomains()
+    #   An array containing a list of collections.
+    def collections(database)
       options={:basic_auth => @auth}
-      handle_result self.class.get('/appdomains', options)
+      handle_result self.class.get("/databases/#{database}/collections", options)
     end
-=end
 
+    
+    # Creates a new collection
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @return [HTTParty::Response] A response.
+    def create_collection(database,collection)
+      options={:basic_auth => @auth, :body => {:name => collection}}
+      handle_result self.class.post("/databases/#{database}/collections", options)
+    end
+
+    # Returns the collection specific information
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @return [HTTParty::Response] A response.
+    #   The collection info as returned from mongodb
+    def collection(database,collection)
+      options={:basic_auth => @auth}
+      handle_result self.class.get("/databases/#{database}/collections/#{collection}", options)
+    end
+    
+    # Deletes the collection
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @return [HTTParty::Response] A response.
+    def delete_collection(database,collection)
+      options={:basic_auth => @auth}
+      handle_result self.class.delete("/databases/#{database}/collections/#{collection}", options)
+    end
+    
+    # Renames a new collection
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @param (String) new_name the new name of the collection.
+    # @return [HTTParty::Response] A response.
+    def rename_collection(database,collection,new_name)
+      options={:basic_auth => @auth, :body => {:name => new_name}}
+      handle_result self.class.put("/databases/#{database}/collections/#{collection}", options)
+    end
+    
+    # Returns a list of all collections belonging to the database.
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @option opts [String] :q a JSON document to query your data with
+    # @option opts [String] :fields aJSON array or hash describing the fields to return from the query
+    # @option opts [String] :skip an integer with the number of documents to skip (allowing pagination)
+    # @option opts [String] :limit the number of documents to return (defaults to 20, max of 100)
+    # @option opts [String] :sort a JSON document describing how to sort the results
+    # @return [HTTParty::Response A response.
+    #   The json result from the query
+    def documents(database,collection, opts = {})
+      options={:basic_auth => @auth, :query => opts}
+      handle_result self.class.get("/databases/#{database}/collections/#{collection}/documents", options)
+    end
+
+    # Returns a the document as specified through it's id
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @param (String) document_id the document_id of the document.
+    # @return [HTTParty::Response A response.
+    #   The json describing the document
+    def document(database,collection, document_id)
+      options={:basic_auth => @auth}
+      handle_result self.class.get("/databases/#{database}/collections/#{collection}/documents/#{document_id}", options)
+    end
+
+    # Creates a new document
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @param (String) document_json a json string containing the new document
+    # @return [HTTParty::Response A response.
+    #   The created document
+    def create_document(database,collection, document_json)
+      options={:basic_auth => @auth,:body => {:document => document_json}}
+      handle_result self.class.post("/databases/#{database}/collections/#{collection}/documents", options)
+    end
+
+    # Updates a new document
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @param (String) document_id the document_id of the document.
+    # @param (String) document_json a json string containing the new document
+    # @return [HTTParty::Response A response.
+    #   The updated document
+    def update_document(database,collection,document_id, document_json)
+      options={:basic_auth => @auth,:body => {:document => document_json}}
+      handle_result self.class.put("/databases/#{database}/collections/#{collection}/documents/#{document_id}", options)
+    end
+
+
+      
+    # Deletes the document
+    # @param (String) database the name of the database.
+    # @param (String) collection the name of the collection.
+    # @param (String) document_id the document_id of the document.
+    # @return [HTTParty::Response A response.
+    def delete_document(database,collection, document_id)
+      options={:basic_auth => @auth}
+      handle_result self.class.delete("/databases/#{database}/collections/#{collection}/documents/#{document_id}", options)
+    end
+      
   end
 end
 
