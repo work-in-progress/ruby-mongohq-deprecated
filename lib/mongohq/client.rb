@@ -23,7 +23,6 @@ module Mongohq
       @auth = {:api_key => api_key, :api_secret => api_secret}
     end
           
-private
     # Examines a bad response and raises an appropriate exception
     #
     # @param [HTTParty::Response] the response as returned by the web request.
@@ -44,6 +43,7 @@ private
     # @raise [StandardError] raised in case of an error that is not web service related. 
     # @return [HTTParty::Response] the response as returned by the web request.
     def handle_result(response)
+      puts response.inspect
       response.ok? ? response : self.bad_response(response) 
     end
 
