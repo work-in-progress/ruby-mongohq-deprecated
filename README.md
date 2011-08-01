@@ -13,6 +13,7 @@ Include this in your gemfile
 
 gem 'mongohq'
 
+
 ## Use
 A more detailed description can be found at <http://rubydoc.info/gems/mongohq>.
 
