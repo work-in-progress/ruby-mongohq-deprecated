@@ -2,4 +2,4 @@ HTTP/1.1 200 OK
 Status: 200
 Content-Type: application/json; charset=utf-8
 
-["angelina","shopsnearme","taglist","triponadeal"] 
+[{"name":"angelina","hostname":"swan.mongohq.com","port":1000},{"name":"uma","hostname":"flame.mongohq.com","port":2000},{"name":"kate","hostname":"staff.mongohq.com","port":3000},{"name":"liv","hostname":"pearl.mongohq.com","port":4000},{"name":"jennifer","hostname":"pearl.mongohq.com","port":5000}]

@@ -11,8 +11,23 @@ describe Mongohq::Client do
   context "when invoking GET https://mongohq.com/api/databases" do
     it "should return a list of databases" do
       res = @client.databases
+      res.length.should == 5
+      res[0]['name'].should == 'angelina'
+      res[0]['port'].should == 1000
+      res[0]['hostname'].should == 'swan.mongohq.com'
     end
   end
+
+  context "when invoking GET https://mongohq.com/api/databases through database_detail" do
+    it "should return a list of databases" do
+      res = @client.database_connection_detail 'angelina'
+      res['name'].should == 'angelina'
+      res['port'].should == 1000
+      res['hostname'].should == 'swan.mongohq.com'
+    end
+  end
+  
+  
 
   context "when invoking POST https://mongohq.com/api/databases" do
     it "should create a new database" do

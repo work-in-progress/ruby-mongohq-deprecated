@@ -46,6 +46,10 @@ This gem was created to the tunes of Natalia Kills and Nicki Minaj.
 
 ## Release Notes
 
+### 0.0.3
+
+* added a new method database_connection_detail that works against the changed result signature of the databases API call.
+
 ### 0.0.2
 
 * Changed the description. Apologies for the version bump.

@@ -108,11 +108,28 @@ public
 
     # Returns a list of all databases.
     # @return [HTTParty::Response] A response.
-    #   An array containing a list of databases.
-    #   ["scottyapp","shopsnearme","taglist","triponadeal"]  
+    #   An array containing a list of database hashes
+    #   * name
+    #   * hostname
+    #   * port
     def databases()
       options={:basic_auth => @auth}
       handle_result self.class.get('/databases', options)
+    end
+
+    # Returns the connection detail for a database
+    # This is a simple wrapper over databases, which should be used if you need connection info
+    # for more than one 
+    # @return [Hash] A hash containing .
+    #   * name
+    #   * hostname
+    #   * port
+    def database_connection_detail(name)
+      res = databases()
+      items = res.select {|x| x['name'] == name}
+      
+      raise StandardError, "Database #{name} not found." unless items && items.length > 0
+      items[0]
     end
 
     # Creates a new database
