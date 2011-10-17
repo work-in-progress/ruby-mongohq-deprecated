@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   
   s.add_runtime_dependency "httparty"  
+  s.add_runtime_dependency "multi_json", "~> 1.0"  
   s.add_development_dependency "rspec", "~> 2.1"
   s.add_development_dependency "rake", "~> 0.8"
   s.add_development_dependency "fakeweb",">= 0"
