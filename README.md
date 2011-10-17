@@ -1,4 +1,6 @@
 
+IMPORTANT: THIS VERSION SUPPORTS THE BETA OF THE MONGOHQ API - New version supporting the new one is coming soon - message me if necessary.
+
 INFO: Need to improve the specs eventually.
 
 ## mongohq
