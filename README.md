@@ -7,7 +7,7 @@ INFO: Need to improve the specs eventually.
 
 An API wrapper for the mongohq API (<http://mongohq.com>). The initial version uses a straight approach, an ActiveResource like interface might be added if there is enough interest.
 
-[![Build Status](http://travis-ci.org/scottyapp/mongohq.png)](http://travis-ci.org/scottyapp/mongohq)
+[![Build Status](http://travis-ci.org/scottyapp/ruby-mongohq.png)](http://travis-ci.org/scottyapp/ruby-mongohq)
 
 ## Install
 
